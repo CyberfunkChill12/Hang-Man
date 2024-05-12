@@ -1,0 +1,75 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+
+string maskString(string str){
+	string a = "";
+	for(int i=0;i<str.length();i++){
+		a += "*";  
+	}
+	return a;
+}
+
+
+bool won(string masked){
+	for(int i=0;i<masked.length();i++){
+		if(masked[i] == '*') return false;
+	}
+	return true;
+}
+
+int main(){
+	srand(time(0));
+	string words[] = { "japan","turkey","nepal","malaysia","philippines","australia","america","ethiopia","oman","indonesia" };
+	
+	string secret = words[rand()%10];    
+	string masked = maskString(secret);  
+	
+	int tries = 5;                       
+	unsigned int currentChar = 0;   
+	
+	cout << "Welcome to hangman...Guess a country name";
+    cout << "\nEach letter is represented by a star.";
+    cout << "\nYou have to type only one letter in one try";
+    cout << "\nYou have 5 tries to try and guess the word\n";
+    cout << "************************************************";
+
+	while(tries != 0 && currentChar <= secret.length()){
+		
+		char guess;
+
+		if(masked[currentChar] == '*'){
+			cout << "\n\n" << masked << endl;
+			cout<<"guess a letter: ";
+			cin>>guess;
+			
+
+			if(guess == secret[currentChar]){
+				cout << "You found a letter! Isn't that exciting!" <<endl;
+				for(int i=0;i<secret.length();i++){
+					if(secret[i] == guess) masked[i] = guess;
+				}
+				currentChar++;
+				
+
+				if(won(masked) == true){
+					cout<<"\nYou found a letter! Isn't that exciting!\n<<< CORRECT WORD : "<<secret<<"\n~~~~~~game over~~~~~~~"<<endl;
+					break;
+				}
+			}else{
+				tries--;
+				cout<<"Whoops! That letter isn't in there! \n You have "<< tries << " guesses left." <<endl;
+				if(tries == 0){
+					cout<<"\n<Sorry you lost !\n The Correct word was : "<<secret<<"\n~~~~game over~~~~~"<<endl;
+				}
+			}
+		}else{
+			currentChar++;
+		}
+	}
+	
+	
+	return 0;
+}
+	
